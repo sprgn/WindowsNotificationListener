@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.ApplicationModel;
@@ -83,25 +83,25 @@ namespace WindowsNotificationListener
         }
 
 
-        private async Task connectAndPostAsync(string v, string v1, string bodyText)
-        {
-            var gitHubClient = new GitHubClient(new Octokit.ProductHeaderValue("DOTNETAPP"));
-            gitHubClient.Credentials = new Credentials("DELETED THIS FOR NOW");
-
-  
-
-            var sb = new StringBuilder("---\n");
-            sb.AppendLine("layout: post\n");
-            sb.AppendLine("title:  webull post!\n");
-            sb.AppendLine("date: " + v + "\n");
-            sb.AppendLine("categories: webull\n");
-            sb.AppendLine("---\n");
-            sb.AppendLine(bodyText);
-
-            var (owner, repoName, filePath, branch) = ("kvnlpz", "RSSFeed", "_posts/" + v + "-webull-" + v1 + ".markdown", "main");
-            await gitHubClient.Repository.Content.CreateFile(owner, repoName, filePath, new CreateFileRequest("update from DotNet app", sb.ToString(), branch));
-
-        }
+        // private async Task connectAndPostAsync(string v, string v1, string bodyText)
+        // {
+        //     var gitHubClient = new GitHubClient(new Octokit.ProductHeaderValue("DOTNETAPP"));
+        //     gitHubClient.Credentials = new Credentials("DELETED THIS FOR NOW");
+        //
+        //
+        //
+        //     var sb = new StringBuilder("---\n");
+        //     sb.AppendLine("layout: post\n");
+        //     sb.AppendLine("title:  webull post!\n");
+        //     sb.AppendLine("date: " + v + "\n");
+        //     sb.AppendLine("categories: webull\n");
+        //     sb.AppendLine("---\n");
+        //     sb.AppendLine(bodyText);
+        //
+        //     var (owner, repoName, filePath, branch) = ("kvnlpz", "RSSFeed", "_posts/" + v + "-webull-" + v1 + ".markdown", "main");
+        //     await gitHubClient.Repository.Content.CreateFile(owner, repoName, filePath, new CreateFileRequest("update from DotNet app", sb.ToString(), branch));
+        //
+        // }
 
 
 
@@ -125,26 +125,31 @@ namespace WindowsNotificationListener
                     {
                         string appDisplayName = s.AppInfo.DisplayInfo.DisplayName;
                         Debug.WriteLine(appDisplayName);
-                        
-                        if (appDisplayName.Contains("webull"))
-                        {
+                        string titleText = textElements.FirstOrDefault()?.Text;
+                        Debug.WriteLine(titleText);
+                        string bodyText = string.Join("\n", textElements.Skip(1).Select(t => t.Text));
+                        Debug.WriteLine(bodyText);
+                        Debug.WriteLine("===================");
 
-                            NotificationBinding toastBinding = s.Notification.Visual.GetBinding(KnownNotificationBindings.ToastGeneric);
-                            if (toastBinding != null)
-                            {
-                                IReadOnlyList<AdaptiveNotificationText> textElements = toastBinding.GetTextElements();
-                                string titleText = textElements.FirstOrDefault()?.Text;
-                                Debug.WriteLine(titleText);
-                                if (titleText.Contains("following"))
-                                {
-                                    string bodyText = string.Join("\n", textElements.Skip(1).Select(t => t.Text));
-                                    Debug.WriteLine(bodyText);
-                                    await connectAndPostAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss"), appDisplayName);
-                                    //await connectAndPostAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss"), bodyText);
-                                }
-
-                            }
-                        }
+                        // if (appDisplayName.Contains("webull"))
+                        // {
+                        //
+                        //     NotificationBinding toastBinding = s.Notification.Visual.GetBinding(KnownNotificationBindings.ToastGeneric);
+                        //     if (toastBinding != null)
+                        //     {
+                        //         IReadOnlyList<AdaptiveNotificationText> textElements = toastBinding.GetTextElements();
+                        //         string titleText = textElements.FirstOrDefault()?.Text;
+                        //         Debug.WriteLine(titleText);
+                        //         if (titleText.Contains("following"))
+                        //         {
+                        //             string bodyText = string.Join("\n", textElements.Skip(1).Select(t => t.Text));
+                        //             Debug.WriteLine(bodyText);
+                        //             //await connectAndPostAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss"), appDisplayName);
+                        //             //await connectAndPostAsync(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss"), bodyText);
+                        //         }
+                        //
+                        //     }
+                        // }
                     }
                     await Task.Delay(TimeSpan.FromSeconds(10));
                     break;
