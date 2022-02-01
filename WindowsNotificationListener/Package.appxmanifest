@@ -9,7 +9,7 @@
 
   <Identity
     Name="b8a39bcf-a53a-4061-886f-8c11447b7723"
-    Publisher="CN=Kevin"
+    Publisher="CN=test"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="b8a39bcf-a53a-4061-886f-8c11447b7723" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
@@ -48,6 +48,6 @@
     <Capability Name="internetClient" />
     <uap3:Capability Name="userNotificationListener"/>
     <Capability Name="internetClientServer"/>
-    <Capability Name="privateNetworkClientServer"/>
+    <rescap:Capability Name="extendedExecutionUnconstrained"/>
   </Capabilities>
 </Package>

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Windows.UI.ViewManagement;
 using Windows.Foundation;
 using System.Collections.ObjectModel;
-using System.Management.Automation;
+//using System.Management.Automation;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -125,6 +125,9 @@ namespace WindowsNotificationListener
                     {
                         string appDisplayName = s.AppInfo.DisplayInfo.DisplayName;
                         Debug.WriteLine(appDisplayName);
+
+                        NotificationBinding toastBinding = s.Notification.Visual.GetBinding(KnownNotificationBindings.ToastGeneric);
+                        IReadOnlyList<AdaptiveNotificationText> textElements = toastBinding.GetTextElements();
                         string titleText = textElements.FirstOrDefault()?.Text;
                         Debug.WriteLine(titleText);
                         string bodyText = string.Join("\n", textElements.Skip(1).Select(t => t.Text));
